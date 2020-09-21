@@ -16,7 +16,7 @@ class ReadMoreText extends StatefulWidget {
     this.trimCollapsedText = ' ...read more',
     this.trimLength = 240,
     this.trimLines = 2,
-    this.trimMode = TrimMode.Length,
+    this.trimMode = TrimMode.length,
     this.style,
     this.trimTextStyle,
     this.textAlign,
@@ -130,7 +130,7 @@ class ReadMoreTextState extends State<ReadMoreText> {
 
         var textSpan;
         switch (widget.trimMode) {
-          case TrimMode.Length:
+          case TrimMode.length:
             if (widget.trimLength < widget.data.length) {
               textSpan = TextSpan(
                 style: effectiveTextStyle,
@@ -146,7 +146,7 @@ class ReadMoreTextState extends State<ReadMoreText> {
               );
             }
             break;
-          case TrimMode.Line:
+          case TrimMode.line:
             if (textPainter.didExceedMaxLines) {
               textSpan = TextSpan(
                 style: effectiveTextStyle,
