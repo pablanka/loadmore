@@ -4,37 +4,37 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 enum TrimMode {
-  Length,
-  Line,
+  length,
+  line,
 }
 
 class ReadMoreText extends StatefulWidget {
   const ReadMoreText(
-      this.data, {
-        Key key,
-        this.trimExpandedText = ' read less',
-        this.trimCollapsedText = ' ...read more',
-        this.colorClickableText,
-        this.trimLength = 240,
-        this.trimLines = 2,
-        this.trimMode = TrimMode.Length,
-        this.style,
-        this.textAlign,
-        this.textDirection,
-        this.locale,
-        this.textScaleFactor,
-        this.semanticsLabel,
-      })  : assert(data != null),
+    this.data, {
+    Key key,
+    this.trimExpandedText = ' read less',
+    this.trimCollapsedText = ' ...read more',
+    this.trimLength = 240,
+    this.trimLines = 2,
+    this.trimMode = TrimMode.Length,
+    this.style,
+    this.trimTextStyle,
+    this.textAlign,
+    this.textDirection,
+    this.locale,
+    this.textScaleFactor,
+    this.semanticsLabel,
+  })  : assert(data != null),
         super(key: key);
 
   final String data;
   final String trimExpandedText;
   final String trimCollapsedText;
-  final Color colorClickableText;
   final int trimLength;
   final int trimLines;
   final TrimMode trimMode;
   final TextStyle style;
+  final TextStyle trimTextStyle;
   final TextAlign textAlign;
   final TextDirection textDirection;
   final Locale locale;
@@ -73,14 +73,9 @@ class ReadMoreTextState extends State<ReadMoreText> {
     final locale =
         widget.locale ?? Localizations.localeOf(context, nullOk: true);
 
-    final colorClickableText =
-        widget.colorClickableText ?? Theme.of(context).accentColor;
-
     TextSpan link = TextSpan(
       text: _readMore ? widget.trimCollapsedText : widget.trimExpandedText,
-      style: effectiveTextStyle.copyWith(
-        color: colorClickableText,
-      ),
+      style: widget.trimTextStyle ?? effectiveTextStyle,
       recognizer: TapGestureRecognizer()..onTap = _onTapLink,
     );
 
@@ -125,8 +120,7 @@ class ReadMoreTextState extends State<ReadMoreText> {
             textSize.height,
           ));
           endIndex = textPainter.getOffsetBefore(pos.offset);
-        }
-        else {
+        } else {
           var pos = textPainter.getPositionForOffset(
             textSize.bottomLeft(Offset.zero),
           );
@@ -158,7 +152,7 @@ class ReadMoreTextState extends State<ReadMoreText> {
                 style: effectiveTextStyle,
                 text: _readMore
                     ? widget.data.substring(0, endIndex) +
-                    (linkLongerThanLine ? _kLineSeparator : '')
+                        (linkLongerThanLine ? _kLineSeparator : '')
                     : widget.data,
                 children: <TextSpan>[link],
               );
